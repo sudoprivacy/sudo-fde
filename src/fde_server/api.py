@@ -625,32 +625,10 @@ def create_app(runtime=None):
         if origin and origin.rstrip("/") != rt.cfg.public_url.rstrip("/"):
             raise Problem("ORIGIN_DENIED", status=403)
 
-    @app.post("/api/auth/register")
-    def register(data: q.Register, request: Request):
-        origin_guard(request)
-        rate_limit(rt.db, "register:" + request.client.host, limit=5, seconds=3600)
-        if not rt.cfg.allow_registration:
-            raise Problem("REGISTRATION_DISABLED", "请联系组织管理员邀请加入", 403)
-        check_password(data.password)
-        tenant_id, user_id = uid(), uid()
-        with rt.db.session(tenant_id, user_id) as s:
-            if s.scalar(select(User).where(User.email == str(data.email).lower())):
-                raise Problem("REGISTRATION_FAILED", "无法创建账号，请登录或找回密码", 409)
-            email = str(data.email).lower()
-            user = User(
-                id=user_id,
-                email=email,
-                name=data.name,
-                password_hash=PASSWORDS.hash(data.password),
-                platform_admin=email in {x.lower() for x in rt.cfg.platform_admin_emails},
-            )
-            s.add(user)
-            s.add(Tenant(id=tenant_id, name=data.organization, budget_micros=rt.cfg.max_budget_micros))
-            s.flush()
-            s.add(TenantDirectory(id=tenant_id))
-            s.add(Membership(tenant_id=tenant_id, user_id=user.id, role="tenant_owner"))
-            audit(s, Context(user.id, tenant_id, "tenant_owner"), "organization.created", tenant_id)
-        return login_response(rt, user, tenant_id)
+    @app.post("/api/auth/register", include_in_schema=False)
+    def registration_closed():
+        # Keep a clear response for old clients; organization creation is admin-only.
+        raise Problem("REGISTRATION_DISABLED", "公开注册已关闭，请联系管理员邀请加入组织", 403)
 
     @app.post("/api/auth/login")
     def login(data: q.Login, request: Request):

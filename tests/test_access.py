@@ -60,7 +60,8 @@ def test_csrf_origin_cookies_and_login_throttling(platform):
     c.headers.pop('X-CSRF-Token')
     assert c.post('/api/workspaces', json={"name": "blocked"}).status_code == 403
     anon = TestClient(platform['app'])
-    for _ in range(10):
+    # Account setup has already performed one successful login in this rate window.
+    for _ in range(9):
         assert anon.post('/api/auth/login', json={"email": "owner@example.com", "password": "wrong"}).status_code == 401
     assert anon.post('/api/auth/login', json={"email": "owner@example.com", "password": PASSWORD}).status_code == 429
 

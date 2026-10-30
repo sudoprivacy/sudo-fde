@@ -1,7 +1,7 @@
 """Acceptance against the dedicated local Compose fixture. No external/production target allowed."""
 import io
 import json
-import secrets
+import os
 import time
 import uuid
 import zipfile
@@ -11,6 +11,14 @@ import httpx
 from rdflib import Graph
 
 base_url = "http://127.0.0.1:18800"
+admin_email = os.environ.get("FDE_ACCEPTANCE_ADMIN_EMAIL", "admin@example.com")
+admin_password = os.environ.get("FDE_ACCEPTANCE_ADMIN_PASSWORD", "")
+credentials_file = os.environ.get("FDE_ACCEPTANCE_CREDENTIALS_FILE")
+if credentials_file:
+    credentials = dict(line.split(": ", 1) for line in Path(credentials_file).read_text().splitlines() if ": " in line)
+    admin_email, admin_password = credentials.get("Email", admin_email), credentials.get("Password", "")
+if not admin_password:
+    raise SystemExit("Supply the dedicated acceptance stack's admin credentials via FDE_ACCEPTANCE_CREDENTIALS_FILE or FDE_ACCEPTANCE_ADMIN_PASSWORD")
 client = httpx.Client(base_url=base_url, timeout=30)
 for attempt in range(50):
     try:
@@ -41,9 +49,12 @@ def wait(job_id):
     raise AssertionError("Task did not finish within acceptance window")
 
 
-user = call("POST", "/auth/register", json={"email": "accept-"+uuid.uuid4().hex[:10]+"@example.com",
-            "name": "Container acceptance", "password": secrets.token_urlsafe(24), "organization": "Container acceptance"})
-client.headers["X-CSRF-Token"] = user["csrf"]
+signed_in = call("POST", "/auth/login", json={"email": admin_email, "password": admin_password})
+client.headers["X-CSRF-Token"] = signed_in["csrf"]
+call("GET", "/admin/session")
+tenant = call("POST", "/admin/tenants", json={"name": "Container acceptance " + uuid.uuid4().hex[:10],
+              "owner_user_id": signed_in["user"]["id"]})
+call("POST", "/tenants/" + tenant["id"] + "/switch")
 call("POST", "/billing/binding", json={"authorization_code": "demo-local"})
 workspace = call("POST", "/workspaces", json={"name": "食品业务容器验收"})["id"]
 call("POST", f"/workspaces/{workspace}/evidence", json={"text": "我们做食品批发，客户是餐厅，靠进销差价赚钱。采购从供应商进货，仓库管理库存，第三方物流发货。ERP 记订单，Excel 管补货，经常断货和发货延迟。"})

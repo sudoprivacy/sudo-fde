@@ -43,7 +43,6 @@ class Settings(BaseSettings):
     max_chunks_per_document: int = 500
     retrieval_limit: int = 6
     job_lease_seconds: int = 600
-    allow_registration: bool = True
     trust_proxy: bool = False
     forwarded_allow_ips: str = "127.0.0.1"
     smtp_host: str | None = None
@@ -53,7 +52,6 @@ class Settings(BaseSettings):
     smtp_from: str = "FDE <noreply@example.test>"
     smtp_starttls: bool = True
     cors_origins: list[str] = Field(default_factory=list)
-    platform_admin_emails: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def production_guards(self):

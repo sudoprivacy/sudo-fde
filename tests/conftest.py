@@ -33,9 +33,19 @@ def platform(tmp_path, monkeypatch):
 
 
 def user(platform, email, organization=None):
+    """Provision isolated test accounts, then exercise the real password-login flow."""
+    from fde_server.models import Membership, Tenant, TenantDirectory, User, uid
+    from fde_server.security import PASSWORDS
+
+    tenant_id, user_id = uid(), uid()
+    with platform['rt'].db.session(tenant_id, user_id) as s:
+        s.add(User(id=user_id, email=email, name=email.split('@')[0], password_hash=PASSWORDS.hash(PASSWORD)))
+        s.add(Tenant(id=tenant_id, name=organization or ('测试组织 · ' + email)))
+        s.flush()
+        s.add(TenantDirectory(id=tenant_id))
+        s.add(Membership(tenant_id=tenant_id, user_id=user_id, role='tenant_owner'))
     client = TestClient(platform["app"])
-    response = client.post('/api/auth/register', json={"email": email, "name": email.split('@')[0],
-                           "password": PASSWORD, "organization": organization or ('测试组织 · ' + email)})
+    response = client.post('/api/auth/login', json={"email": email, "password": PASSWORD})
     assert response.status_code == 200, response.text
     client.headers['X-CSRF-Token'] = response.json()['csrf']
     return client, response.json()
