@@ -1,0 +1,42 @@
+# Allow only the inputs used by Dockerfile COPY instructions.
+# Runtime data, credentials, tests and local reports stay outside the build context.
+**
+!Dockerfile
+!.dockerignore
+!pyproject.toml
+!requirements.lock
+!alembic.ini
+!src/
+!src/**
+!migrations/
+!migrations/**
+
+# Generated files and credentials must also be excluded inside source directories.
+**/__pycache__/
+**/*.py[cod]
+**/*.egg-info/
+**/.pytest_cache/
+**/.ruff_cache/
+**/.mypy_cache/
+**/.DS_Store
+**/._*
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.p12
+**/*.pfx
+**/*-credentials.txt
+**/*-credentials.json
+**/credentials.json
+**/client_secret*.json
+**/*.db
+**/*.db-*
+**/*.sqlite
+**/*.sqlite-*
+**/*.sqlite3
+**/*.sqlite3-*
+**/*.log
+**/*.tmp
+**/*.swp
+**/*~

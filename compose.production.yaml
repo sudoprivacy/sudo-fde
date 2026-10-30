@@ -1,0 +1,43 @@
+# Production uses operator-provisioned PostgreSQL, object storage, mail, embedding and Router.
+# Only the reverse proxy publishes a port. Secret values live outside the image/repository.
+name: sudo-fde-production
+x-service: &service
+  image: ${FDE_IMAGE:?Set a tested immutable FDE image digest}
+  env_file: [.env.production]
+  restart: unless-stopped
+  read_only: true
+  tmpfs:
+    - /tmp:uid=10001,gid=10001,mode=0700
+    - /home/fde/.sudo-fde:uid=10001,gid=10001,mode=0700
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  networks: [services]
+services:
+  web:
+    <<: *service
+    command: [fde, serve, --host, 0.0.0.0]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8800/readyz')"]
+      interval: 30s
+      retries: 3
+  pattern:
+    <<: *service
+    command: [fde, pattern, --host, 0.0.0.0]
+  worker:
+    <<: *service
+    command: [fde, worker]
+  maintenance:
+    <<: *service
+    command: [fde, maintenance]
+  proxy:
+    image: nginx:1.27-alpine
+    ports: ["443:443"]
+    volumes:
+      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ${FDE_TLS_DIRECTORY:?Set TLS certificate directory}:/etc/nginx/tls:ro
+    networks: [services]
+    depends_on: [web]
+networks:
+  services:
+    external: true
+    name: ${FDE_SERVICE_NETWORK:?Set the operator-managed private service network}

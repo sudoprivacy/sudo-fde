@@ -1,0 +1,46 @@
+# 全部阈值集中在这里（规格 §10 约定：代码里不出现魔法数字）。
+# 标注"基线待回填"的值是起步值，评测出基线后再调。
+
+interview:
+  max_rounds: 5                # 停止条件 2（规格 §5.2）
+  max_questions: 3             # 每轮追问上限（§5.4 原则 7）
+  extra_rounds_for_data: 2     # 阶段二：数据对撞产生的待问事项可在 max_rounds 之后再问的轮数
+  opening_dimensions:          # 首轮五个开场维度（§5.4）
+    - 卖什么给谁
+    - 怎么赚钱
+    - 货或服务怎么流转
+    - 最头疼的三件事
+    - 用什么系统或表格管
+
+recommend:
+  samples: 3                   # 多次采样 n（§5.7，A-5）
+  sample_temperature: 0.8
+  cluster_method: llm          # llm：由模型判断哪些条目是同一件事；lexical：字面相似度（无模型或模型失败时的退路）
+  cluster_similarity: 0.6      # lexical 退路的阈值（名字的二元组包含度），基线待回填
+  max_processes: 8
+  max_systems: 6
+  max_questions: 10
+  rejected_similarity: 0.6     # 与已驳回断言相似即丢弃
+
+limits:
+  max_items: 20
+  min_confidence: 0.3
+  max_context_chars: 60000     # 超出返回 CONTEXT_TOO_LARGE（§3.8）
+
+llm:
+  temperature: 0.2
+  timeout_seconds: 120
+  max_retries: 1               # 解析失败重试一次（A-1）
+
+match:
+  max_assets: 2000             # 超出返回 CONTEXT_TOO_LARGE（阶段二设计 §5.7）
+  max_nodes: 60
+  label_batch: 30              # 每次语义标注的表数
+  label_workers: 4
+  lexicon_trust: 0.8           # 词典置信度 ≥ 此值的表不再送模型
+  matched: 0.6                 # 条目分数 ≥ 此值判 matched（基线待回填）
+  unknown_floor: 0.3           # 介于 unknown_floor 与 matched 之间判 unknown
+  unclaimed_top: 5
+  unclaimed_min_rows: 10
+  unclaimed_skip_words: [tmp, temp, bak, backup, log, test, copy]
+  offline_system_words: [excel, 表格, 纸, 单据, 微信, 电话, 邮件, 线下, 人工, 手工, im, 即时通讯]

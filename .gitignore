@@ -1,0 +1,86 @@
+# Local configuration and credentials (commit sanitized examples only).
+.env
+.env.*
+!.env.example
+!.env.*.example
+/secrets/
+/.secrets/
+*-credentials.txt
+*-credentials.json
+credentials.json
+client_secret*.json
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Runtime databases, uploaded documents, exports and backups.
+.data/
+/uploads/
+/objects/
+/exports/
+/backups/
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.dump
+
+# Python environments, bytecode and package build products.
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Test, coverage and tool output.
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pytype/
+.hypothesis/
+.tox/
+.nox/
+.cache/
+.uv/
+.coverage
+.coverage.*
+coverage.xml
+coverage.json
+htmlcov/
+test-results/
+playwright-report/
+blob-report/
+node_modules/
+
+# Local acceptance runs contain generated business data and resource IDs.
+# Keep reusable plans, test code and the acceptance matrix under version control.
+/docs/acceptance/
+/.Dockerfile.*-build
+
+# Logs and temporary files.
+logs/
+*.log
+*.log.*
+*.pid
+*.pid.lock
+/tmp/
+/temp/
+*.tmp
+*.swp
+*.swo
+*~
+
+# Operating system and personal editor state.
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/

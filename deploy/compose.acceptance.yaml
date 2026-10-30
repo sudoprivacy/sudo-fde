@@ -1,0 +1,5 @@
+services:
+  web:
+    ports: !override ["127.0.0.1:18800:8800"]
+    environment:
+      FDE_PUBLIC_URL: http://127.0.0.1:18800

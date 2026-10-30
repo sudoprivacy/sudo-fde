@@ -1,0 +1,38 @@
+# 敏感检查规则（规格 §9.2）。fde-studio 复制同一份文件，CI 比对哈希。
+# 三态：命中 sensitive 规则 → sensitive；只命中 uncertain 规则 → uncertain；都不命中 → clean。
+# 注意：这是降低风险而不是消除风险；命名实体识别（A-12）本期未接入。
+version: 1
+
+sensitive:
+  - id: cn_mobile
+    pattern: '(?<!\d)1[3-9]\d{9}(?!\d)'
+    label: 手机号
+  - id: cn_id_card
+    pattern: '(?<!\d)\d{17}[\dXx](?!\d)'
+    label: 身份证号
+  - id: bank_card
+    pattern: '(?<!\d)\d{16,19}(?!\d)'
+    label: 银行卡号
+  - id: email
+    pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+    label: 邮箱
+  - id: long_digits
+    pattern: '(?<!\d)\d{8,}(?!\d)'
+    label: 连续 8 位以上数字
+  - id: labeled_personal
+    pattern: '(姓名|联系人|收货人|身份证|电话|手机|住址|地址)\s*[:：]\s*\S+'
+    label: 带标签的个人信息
+  - id: street_address
+    pattern: '[一-龥]{2,}(路|街|大道|巷)\s*\d+\s*号'
+    label: 门牌地址
+
+uncertain:
+  - id: money_amount
+    pattern: '\d+(\.\d+)?\s*(元|万元|亿元|块钱|美元|USD|RMB|￥|¥)'
+    label: 具体金额
+  - id: priced_quantity
+    pattern: '(单价|总价|金额|报价|成交价)\s*[:：]?\s*\d'
+    label: 价格明细
+  - id: quantity_with_unit
+    pattern: '[一-龥]{2,3}\s*\d+(\.\d+)?\s*(箱|件|吨|公斤|kg|托|瓶|袋)'
+    label: 主体加数量的明细

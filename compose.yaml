@@ -1,0 +1,73 @@
+name: sudo-fde
+x-app: &app
+  image: sudo-fde-server:local
+  build: .
+  restart: unless-stopped
+  environment: &env
+    FDE_ENVIRONMENT: development
+    FDE_DATABASE_URL: postgresql+psycopg://fde_app:${FDE_DB_PASSWORD:-local-app-password}@postgres:5432/fde
+    FDE_PUBLIC_URL: http://127.0.0.1:8800
+    FDE_PATTERN_URL: http://pattern:8801
+    FDE_ROUTER_URL: http://router:8802
+    FDE_ROUTER_TOKEN: development-router-token
+    FDE_OBJECT_ROOT: /app/.data/objects
+  volumes:
+    - files:/app/.data
+  networks: [backend]
+  depends_on:
+    migrate: {condition: service_completed_successfully}
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: fde
+      POSTGRES_PASSWORD: ${FDE_DB_ADMIN_PASSWORD:-local-migration-password}
+      FDE_DB_PASSWORD: ${FDE_DB_PASSWORD:-local-app-password}
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./deploy/init-postgres.sql:/docker-entrypoint-initdb.d/10-runtime.sql:ro
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U postgres -d fde]
+      interval: 5s
+      retries: 20
+    networks: [backend]
+  migrate:
+    image: sudo-fde-server:local
+    build: .
+    command: [alembic, upgrade, head]
+    environment:
+      FDE_DATABASE_URL: postgresql+psycopg://postgres:${FDE_DB_ADMIN_PASSWORD:-local-migration-password}@postgres:5432/fde
+    depends_on:
+      postgres: {condition: service_healthy}
+    networks: [backend]
+  router:
+    <<: *app
+    command: [fde, router-simulator, --host, 0.0.0.0, --port, "8802"]
+  pattern:
+    <<: *app
+    command: [fde, pattern, --host, 0.0.0.0, --port, "8801"]
+  worker:
+    <<: *app
+    command: [fde, worker]
+  maintenance:
+    <<: *app
+    command: [fde, maintenance]
+  web:
+    <<: *app
+    networks: [backend, frontend]
+    ports: ["127.0.0.1:8800:8800"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8800/healthz')"]
+      interval: 20s
+      retries: 3
+  demo:
+    <<: *app
+    restart: "no"
+    profiles: [seed]
+    command: [fde, seed-demo]
+networks:
+  backend: {internal: true}
+  frontend: {}
+volumes:
+  database:
+  files:

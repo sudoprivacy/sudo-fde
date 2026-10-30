@@ -1,0 +1,29 @@
+name: Platform acceptance
+on: [push, pull_request]
+jobs:
+  application:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+      - run: uv sync --frozen --extra dev
+      - run: uv run ruff check src/fde_server tests migrations
+      - run: node --check src/fde_server/static/app.js
+      - run: uv run pytest -q --cov=fde_server --cov-report=xml --junitxml=test-results/pytest.xml
+      - run: sh scripts/test-postgres.sh
+      - run: docker compose config --quiet
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acceptance-results
+          path: |
+            test-results/
+            coverage.xml
+  container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t sudo-fde-server:ci .
+      - run: docker run --rm sudo-fde-server:ci python -c "import fde_server.api, fde_server.pattern; from ps.core import prompts; assert prompts.load('understand/summary_v1')"

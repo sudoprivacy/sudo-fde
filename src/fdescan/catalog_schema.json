@@ -1,0 +1,461 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "fde-catalog/1",
+ "description": "本地扫描器输出的目录文件。只允许元数据与统计类别，任何取值类字段（sample_values、min、max、avg、默认值本身）都不在 schema 内，出现即拒收。",
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "catalog"
+ ],
+ "properties": {
+  "catalog": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": [
+    "format",
+    "snapshot_id",
+    "scanned_at",
+    "scanner",
+    "source",
+    "scope",
+    "assets",
+    "redactions"
+   ],
+   "properties": {
+    "format": {
+     "const": "fde-catalog/1"
+    },
+    "snapshot_id": {
+     "type": "string",
+     "pattern": "^snap_[A-Za-z0-9_\\-]{4,80}$"
+    },
+    "scanned_at": {
+     "type": "string"
+    },
+    "scanner": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "version",
+      "method"
+     ],
+     "properties": {
+      "version": {
+       "type": "string"
+      },
+      "method": {
+       "enum": [
+        "db",
+        "ddl",
+        "mcp"
+       ]
+      },
+      "allow_enum": {
+       "type": "boolean"
+      }
+     }
+    },
+    "source": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "id",
+      "kind",
+      "dialect",
+      "system_hint",
+      "name"
+     ],
+     "properties": {
+      "id": {
+       "type": "string",
+       "pattern": "^src_[A-Za-z0-9_\\-]{1,60}$"
+      },
+      "kind": {
+       "enum": [
+        "database",
+        "ddl",
+        "mcp"
+       ]
+      },
+      "dialect": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "system_hint": {
+       "type": [
+        "string",
+        "null"
+       ],
+       "maxLength": 80
+      },
+      "name": {
+       "type": "string",
+       "maxLength": 120
+      }
+     }
+    },
+    "scope": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "schemas_listed",
+      "tables_listed",
+      "tables_total",
+      "permission_errors",
+      "stats_available"
+     ],
+     "properties": {
+      "schemas_listed": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "tables_listed": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "tables_total": {
+       "type": [
+        "integer",
+        "null"
+       ],
+       "minimum": 0
+      },
+      "permission_errors": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "object",
+         "error"
+        ],
+        "properties": {
+         "object": {
+          "type": "string"
+         },
+         "error": {
+          "type": "string",
+          "maxLength": 300
+         }
+        }
+       }
+      },
+      "stats_available": {
+       "type": "boolean"
+      }
+     }
+    },
+    "assets": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "id",
+       "kind",
+       "schema",
+       "name",
+       "comment",
+       "row_count",
+       "primary_key",
+       "columns",
+       "foreign_keys",
+       "referenced_by",
+       "stats_method"
+      ],
+      "properties": {
+       "id": {
+        "type": "string",
+        "pattern": "^a_[A-Za-z0-9_]{1,80}$"
+       },
+       "kind": {
+        "enum": [
+         "table",
+         "view"
+        ]
+       },
+       "schema": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "name": {
+        "type": "string",
+        "maxLength": 200
+       },
+       "comment": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "maxLength": 1000
+       },
+       "row_count": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "minimum": 0
+       },
+       "primary_key": {
+        "type": "array",
+        "items": {
+         "type": "string"
+        }
+       },
+       "referenced_by": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "stats_method": {
+        "enum": [
+         "exact",
+         "sampled",
+         "none"
+        ]
+       },
+       "foreign_keys": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "columns",
+          "ref_table",
+          "ref_columns",
+          "declared"
+         ],
+         "properties": {
+          "columns": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           }
+          },
+          "ref_table": {
+           "type": "string"
+          },
+          "ref_columns": {
+           "type": "array",
+           "items": {
+            "type": "string"
+           }
+          },
+          "declared": {
+           "type": "boolean"
+          }
+         }
+        }
+       },
+       "columns": {
+        "type": "array",
+        "items": {
+         "type": "object",
+         "additionalProperties": false,
+         "required": [
+          "name",
+          "type",
+          "nullable",
+          "has_default",
+          "comment",
+          "null_rate",
+          "distinct",
+          "shape",
+          "looks_like",
+          "low_cardinality",
+          "monotonic",
+          "date_span_days",
+          "sensitive_column"
+         ],
+         "properties": {
+          "name": {
+           "type": "string",
+           "maxLength": 200
+          },
+          "type": {
+           "type": "string",
+           "maxLength": 80
+          },
+          "nullable": {
+           "type": [
+            "boolean",
+            "null"
+           ]
+          },
+          "has_default": {
+           "type": [
+            "boolean",
+            "null"
+           ]
+          },
+          "comment": {
+           "type": [
+            "string",
+            "null"
+           ],
+           "maxLength": 1000
+          },
+          "null_rate": {
+           "type": [
+            "number",
+            "null"
+           ],
+           "minimum": 0,
+           "maximum": 1
+          },
+          "distinct": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 0
+          },
+          "shape": {
+           "enum": [
+            "date",
+            "datetime",
+            "integer",
+            "decimal",
+            "boolean",
+            "code",
+            "text_short",
+            "text_long",
+            "json",
+            "uuid",
+            null
+           ]
+          },
+          "looks_like": {
+           "enum": [
+            "phone",
+            "id_card",
+            "email",
+            "amount",
+            "percent",
+            "status_word",
+            null
+           ]
+          },
+          "low_cardinality": {
+           "type": [
+            "boolean",
+            "null"
+           ]
+          },
+          "monotonic": {
+           "type": [
+            "boolean",
+            "null"
+           ]
+          },
+          "date_span_days": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 0
+          },
+          "sensitive_column": {
+           "type": "boolean"
+          },
+          "enum_values": {
+           "type": "array",
+           "maxItems": 20,
+           "items": {
+            "type": "string",
+            "maxLength": 40
+           }
+          }
+         }
+        }
+       }
+      }
+     }
+    },
+    "redactions": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+       "path",
+       "rule"
+      ],
+      "properties": {
+       "path": {
+        "type": "string"
+       },
+       "rule": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "mcp": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": [
+      "operations",
+      "transport"
+     ],
+     "properties": {
+      "transport": {
+       "enum": [
+        "stdio",
+        "http"
+       ]
+      },
+      "operations": {
+       "type": "array",
+       "maxItems": 200,
+       "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+         "name",
+         "description",
+         "params",
+         "role"
+        ],
+        "properties": {
+         "name": {
+          "type": "string",
+          "maxLength": 120
+         },
+         "description": {
+          "type": [
+           "string",
+           "null"
+          ],
+          "maxLength": 300
+         },
+         "params": {
+          "type": "array",
+          "maxItems": 20,
+          "items": {
+           "type": "string",
+           "maxLength": 80
+          }
+         },
+         "role": {
+          "enum": [
+           "schema",
+           "read",
+           "write",
+           "other"
+          ]
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

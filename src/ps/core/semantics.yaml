@@ -1,0 +1,108 @@
+# 共享语义标签词表 ＋ 命名词典（阶段二设计 §5.2 §5.3，规格 §4 label_vocabulary / lexicon_entry）
+# 指纹里的 semantic、表与列的语义标注，都从这里取；不在表里的写 new:<snake_case>。
+# en：英文同义词与缩写（小写，去掉下划线后比对）；py：拼音缩写；zh：显示名。
+# 首版人工整理，不来自任何客户项目（阶段二"工具数据而非经验"）。
+version: 1
+
+entities:
+  customer:        {zh: 客户, en: [customer, customers, cust, client, clients, buyer, khxx], py: [kh, khda, khjbxx, kehu]}
+  supplier:        {zh: 供应商, en: [supplier, suppliers, vendor, vendors, provider], py: [gys, gysxx]}
+  product:         {zh: 商品 / 物料, en: [product, products, prod, item, items, goods, sku, material, materials, part, parts, article], py: [sp, spxx, spjbxx, wl, wlxx, ch]}
+  category:        {zh: 品类, en: [category, categories, cat, class, productcategory], py: [lb, splb, fl]}
+  employee:        {zh: 员工, en: [employee, employees, emp, staff, user_staff, salesperson], py: [yg, ygxx, zy]}
+  territory:       {zh: 区域, en: [territory, territories, area, district], py: [qy]}
+  region:          {zh: 大区, en: [region, regions, zone], py: [dq]}
+  employee_territory: {zh: 员工负责区域, en: [employeeterritories, employee_territories, employeeterritory], py: [ygqy]}
+  shipper:         {zh: 承运商, en: [shipper, shippers, carrier, carriers, logistics, forwarder], py: [cys, wlgs]}
+  warehouse:       {zh: 仓库, en: [warehouse, warehouses, wh, store_location, depot], py: [ck, ckxx]}
+  sales_order:     {zh: 销售订单, en: [order, orders, salesorder, sales_order, so, saleorder], py: [dd, xsdd, ddxx]}
+  sales_order_line: {zh: 订单明细, en: [orderdetails, order_details, orderdetail, orderline, order_lines, orderitems, order_items, soline, salesorderline, lineitem, lineitems, line_item], py: [ddmx, xsddmx, mx]}
+  purchase_order:  {zh: 采购单, en: [purchaseorder, purchase_order, purchaseorders, po, purchase, purchases], py: [cgd, cgdd, cg]}
+  purchase_order_line: {zh: 采购明细, en: [purchaseorderline, purchase_order_line, poline, po_line, purchaseorderdetails], py: [cgmx, cgddmx]}
+  goods_receipt:   {zh: 入库单, en: [receipt, receipts, goodsreceipt, grn, stockin, inbound], py: [rkd, rk]}
+  shipment:        {zh: 发货 / 出库, en: [shipment, shipments, delivery, deliveries, outbound, stockout, dispatch], py: [fh, ck_d, fhd, ckd]}
+  stock_level:     {zh: 库存, en: [inventory, stock, stocks, stocklevel, stock_level, inventories, onhand], py: [kc, kcxx]}
+  stock_movement:  {zh: 库存流水, en: [stockmovement, stock_movement, inventorytransaction, stockledger, inventory_log], py: [kcls, crk]}
+  invoice:         {zh: 发票 / 账单, en: [invoice, invoices, bill, bills, billing], py: [fp, zd]}
+  payment:         {zh: 收付款, en: [payment, payments, receipt_payment, collection, collections, remittance], py: [sk, fk, skd, hk]}
+  ar_ledger:       {zh: 应收台账, en: [receivable, receivables, ar, accountsreceivable], py: [ys, yszk]}
+  price_list:      {zh: 价目表 / 协议价, en: [pricelist, price_list, price, prices, rate, rates, tariff, contract_rate], py: [jg, jgb, xyj]}
+  production_order: {zh: 生产工单, en: [productionorder, workorder, work_order, manufacturing_order, mo, job], py: [scgd, gd, scdd]}
+  bom:             {zh: 物料清单, en: [bom, billofmaterials, bill_of_materials, recipe], py: [bom, wlqd]}
+  contract:        {zh: 合同, en: [contract, contracts, agreement, agreements], py: [ht, htxx]}
+  project:         {zh: 项目, en: [project, projects, prj, proj], py: [xm, xmxx]}
+  tender:          {zh: 招标, en: [tender, tenders, bid, bids, bidding, rfq, solicitation], py: [zb, zbxm, tb]}
+  bid_evaluation:  {zh: 评标, en: [evaluation, bidevaluation, bid_evaluation, scoring], py: [pb, pbjg]}
+  milestone:       {zh: 交付节点, en: [milestone, milestones, deliverable, deliverables, progress], py: [jd, lcb]}
+  hotel:           {zh: 酒店, en: [hotel, hotels, property, properties], py: [jd_hotel, jdxx]}
+  room_type:       {zh: 房型, en: [roomtype, room_type, roomtypes, room, rooms], py: [fx, fj]}
+  room_allotment:  {zh: 包房 / 配额, en: [allotment, allotments, block, inventory_block, room_block], py: [bf, pe]}
+  booking:         {zh: 预订单, en: [booking, bookings, reservation, reservations], py: [yd, ydd]}
+  distributor:     {zh: 分销商 / 旅行社, en: [distributor, distributors, agency, agencies, travelagency, partner, partners, channel], py: [fxs, lxs, qd]}
+  mapping:         {zh: 映射表, en: [mapping, mappings, map, xref, crossref], py: [ys_map, yingshe]}
+  reconciliation:  {zh: 对账, en: [reconciliation, reconcile, statement, statements, settlement, settlements], py: [dz, js, dzd]}
+  account:         {zh: 客户账号 / 租户, en: [account, accounts, tenant, tenants, org, organization, organisations], py: [zh, zhxx]}
+  user_seat:       {zh: 用户账号, en: [user, users, seat, seats, member, members, login], py: [yh, yhxx]}
+  plan:            {zh: 套餐, en: [plan, plans, package, packages, tier, sku_plan, edition], py: [tc]}
+  subscription:    {zh: 订阅, en: [subscription, subscriptions, sub, contract_term, license], py: [dy, dyxx]}
+  usage_event:     {zh: 使用事件, en: [event, events, usage, usageevent, usage_event, activity, activities, tracking, clickstream], py: [sysj, rz]}
+  trial:           {zh: 试用, en: [trial, trials, freetrial], py: [sy]}
+  opportunity:     {zh: 商机, en: [opportunity, opportunities, deal, deals, lead, leads, pipeline], py: [sj, xs_sj]}
+  support_ticket:  {zh: 客户服务工单, en: [ticket, tickets, case, cases, support, csm_task, healthcheck], py: [gd_kf, kfgd]}
+  audit_log:       {zh: 日志, en: [log, logs, audit, auditlog, history, changelog], py: [rz]}
+
+columns:
+  identifier:          {zh: 主键编号, en: [id, code, "no", number, key, uuid], py: [bh, dm, id]}
+  name:                {zh: 名称, en: [name, title, companyname, productname, fullname, label, description, desc], py: [mc, mingcheng]}
+  status:              {zh: 状态, en: [status, state, stage, flag, is_active, active, phase], py: [zt, zhuangtai]}
+  quantity:            {zh: 数量, en: [quantity, qty, amount_qty, units, count, num, pieces], py: [sl, shuliang]}
+  unit_price:          {zh: 单价, en: [unitprice, unit_price, price, rate, listprice, sellprice, costprice], py: [dj, danjia]}
+  amount:              {zh: 金额, en: [amount, total, totalamount, subtotal, freight, value, net, gross, fee, revenue], py: [je, zje, jine]}
+  discount:            {zh: 折扣, en: [discount, rebate], py: [zk]}
+  stock_on_hand:       {zh: 当前库存, en: [unitsinstock, stock, stockqty, stock_qty, onhand, qtyonhand, quantityonhand, inventoryqty, available], py: [kcl, kcsl, xckc]}
+  in_transit_qty:      {zh: 在途量, en: [unitsonorder, onorder, on_order, intransit, in_transit, incoming], py: [ztl, zt_sl]}
+  reorder_threshold:   {zh: 补货阈值 / 安全库存, en: [reorderlevel, reorder_level, reorderpoint, safetystock, safety_stock, minstock, min_qty], py: [aqkc, bhd]}
+  discontinued:        {zh: 是否停产, en: [discontinued, obsolete, isdeleted, is_deleted, inactive], py: [tc_flag, sfty]}
+  order_date:          {zh: 下单日期, en: [orderdate, order_date, ordered_at, orderedat, createddate], py: [xdrq, ddrq]}
+  required_date:       {zh: 要求到货日期, en: [requireddate, required_date, duedate_delivery, promisedate, promised_date, expecteddate], py: [yqrq, jhrq]}
+  ship_date:           {zh: 发货日期, en: [shippeddate, shipped_date, shipdate, ship_date, deliverydate, delivered_at], py: [fhrq]}
+  expected_arrival_date: {zh: 预计到货日期, en: [expectedarrival, expected_arrival_date, eta, arrivaldate, receiptdate], py: [yjdh, dhrq]}
+  invoice_date:        {zh: 开票日期, en: [invoicedate, invoice_date, billdate, billingdate, issuedate], py: [kprq]}
+  due_date:            {zh: 到期日, en: [duedate, due_date, payment_due, maturity], py: [dqr, dqrq]}
+  paid_date:           {zh: 到账日期, en: [paiddate, paid_date, paymentdate, payment_date, receiveddate, settled_at], py: [dzrq, skrq]}
+  payment_terms_days:  {zh: 账期天数, en: [paymentterms, payment_terms, termsdays, creditdays, credit_days, netdays], py: [zq, zqts]}
+  created_time:        {zh: 创建时间, en: [createdat, created_at, createtime, create_time, created, creationdate, inserted_at], py: [cjsj, chuangjian]}
+  updated_time:        {zh: 更新时间, en: [updatedat, updated_at, modified, modifiedat, lastupdate, update_time], py: [gxsj, xgsj]}
+  event_time:          {zh: 发生时间, en: [timestamp, ts, eventtime, event_time, occurred_at, time, datetime, date], py: [sj, rq, fssj]}
+  start_date:          {zh: 开始日期, en: [startdate, start_date, begin, begindate, validfrom, valid_from, effective_from, checkin, check_in], py: [ksrq, rzrq]}
+  end_date:            {zh: 结束日期, en: [enddate, end_date, expiry, expiredate, validto, valid_to, effective_to, checkout, check_out, renewaldate], py: [jsrq, ldrq, dqsj]}
+  lead_time_days:      {zh: 交货周期, en: [leadtime, lead_time, leadtimedays, deliverydays], py: [jhzq]}
+  planned_date:        {zh: 计划日期, en: [planneddate, planned_date, plandate, scheduled, scheduleddate, deadline], py: [jhrq, jhwc]}
+  actual_date:         {zh: 实际日期, en: [actualdate, actual_date, completeddate, completed_at, finishdate, finished_at], py: [sjrq, wcrq]}
+  budget_amount:       {zh: 预算金额, en: [budget, budgetamount, budget_amount, estimate, estimated_cost], py: [ys_je, yusuan]}
+  actual_cost:         {zh: 实际成本, en: [actualcost, actual_cost, spent, cost, costamount], py: [sjcb, chengben]}
+  contract_amount:     {zh: 合同金额, en: [contractamount, contract_amount, contractvalue, award_amount, bidamount, bid_amount], py: [htje, zbje]}
+  score:               {zh: 评分, en: [score, scores, rating, points], py: [pf, df]}
+  cost_price:          {zh: 采购价 / 成本价, en: [costprice, cost_price, buyprice, netrate, net_rate, purchaseprice], py: [cbj, cgj]}
+  sell_price:          {zh: 销售价, en: [sellprice, sell_price, saleprice, sellingrate, selling_rate, publicrate], py: [xsj, sj_price]}
+  room_nights:         {zh: 间夜, en: [roomnights, room_nights, nights], py: [jy]}
+  seats:               {zh: 席位数, en: [seats, seatcount, licenses, licensecount, user_count], py: [xws]}
+  mrr:                 {zh: 月经常收入, en: [mrr, arr, recurring, recurringrevenue], py: []}
+  phone:               {zh: 电话, en: [phone, mobile, tel, telephone, fax, contact_phone], py: [dh, sj_phone]}
+  email:               {zh: 邮箱, en: [email, mail, e_mail], py: [yx]}
+  address:             {zh: 地址, en: [address, addr, street, city, postalcode, zip, country], py: [dz_addr, dizhi]}
+
+# 业务概念不一定有独立的表，也常以字段形式落在别的表里（例如库存记在商品表的"当前库存"列上）。
+# 指纹要求某实体表而找不到时，按这里的字段标签再找一遍；找到即视为"以字段形式存在"。
+realized_by_columns:
+  stock_level: [stock_on_hand]
+  shipment: [ship_date]
+  payment: [paid_date]
+  invoice: [invoice_date]
+  ar_ledger: [due_date, paid_date]
+  goods_receipt: [expected_arrival_date]
+  milestone: [planned_date, actual_date]
+  trial: [start_date]
+
+# 拼音或缩写里常见的修饰 token，归一时忽略
+noise_tokens: [tb, t, tbl, v, vw, sys, dim, fact, ods, dwd, info, xx, jbxx, data, master, main, base, the, of]

@@ -1,0 +1,287 @@
+[
+  {
+    "file": "src/ps/db.py",
+    "sha256": "126624555784ae5942bb3ab33eaf8f4ebb9a4ff29ca2cf8a09fb6d4b64004517",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/db.py"
+  },
+  {
+    "file": "src/ps/models.py",
+    "sha256": "f98adb6ea69d02b9b03f6e8dfe13bc8c163a54e5bbe17da44174f1fe01ddad3e",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/models.py"
+  },
+  {
+    "file": "src/ps/__init__.py",
+    "sha256": "0b6480af60e880d332c803a6e22ecccd478c168387d5cfd69fde8da5b2d38c7b",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/__init__.py"
+  },
+  {
+    "file": "src/ps/core/catalog.py",
+    "sha256": "7a4b432593cb965b0ebcd6e065edeb505cd1b36bc1e9a4ff53c2e17eefed9755",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/catalog.py"
+  },
+  {
+    "file": "src/ps/core/auth.py",
+    "sha256": "c9d74114d7e9b85e1b0c44825f0d8fc3e7fc1bf00cced8d4f0bfa64e365e524d",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/auth.py"
+  },
+  {
+    "file": "src/ps/core/store.py",
+    "sha256": "70142d40a951f1abca74e65844f4e93df1d149683d1158d44aba05f30fa46059",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/store.py"
+  },
+  {
+    "file": "src/ps/core/llm.py",
+    "sha256": "e4a8516c87c09a8661acd209d6da2335b1a959df154840081da1c7acb2560b87",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/llm.py"
+  },
+  {
+    "file": "src/ps/core/prompts.py",
+    "sha256": "7f88097484837bbefb7257d6438f22ef35f80cc908c4bbb7e324fa71836c75f5",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/prompts.py"
+  },
+  {
+    "file": "src/ps/core/guard_rules.yaml",
+    "sha256": "0c7ff6df53010f33cb2e5efbd852aab90fa9ab1c6ac0bf042e9e189a186d27ba",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/guard_rules.yaml"
+  },
+  {
+    "file": "src/ps/core/semantics.yaml",
+    "sha256": "4c65d1e5785f3828e38e9b1e289f9b6bf8be6abf6556ded5beba73ff30b3c6d0",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/semantics.yaml"
+  },
+  {
+    "file": "src/ps/core/schemas.py",
+    "sha256": "310cb31faeb50c24b94303e216a00ab5a6559d5bf5359600f5f1795c10fa5a23",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/schemas.py"
+  },
+  {
+    "file": "src/ps/core/text.py",
+    "sha256": "9a63d762be739f70f40edad5bc7b360ed17eef55fbb92ccbb8d1df290192835c",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/text.py"
+  },
+  {
+    "file": "src/ps/core/guard.py",
+    "sha256": "df236a3b02053e8539ddc5d0add5353914f63300f63a5d56a4d73855ed053138",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/guard.py"
+  },
+  {
+    "file": "src/ps/core/fake_llm.py",
+    "sha256": "a7fc15ca1c86f7c7b2e96badb4af179d0d76d99aa6bb4bb88366808ffc957486",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/fake_llm.py"
+  },
+  {
+    "file": "src/ps/core/errors.py",
+    "sha256": "1f2e3a5c808a72c9d206fa8a2922fbc1493553a11f8ba99a3963c64ed9ce2335",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/core/errors.py"
+  },
+  {
+    "file": "src/ps/config/__init__.py",
+    "sha256": "310bffcb5970edd3633b888c7f086bc1670b71fd936039b514b81e62c708aca1",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/config/__init__.py"
+  },
+  {
+    "file": "src/ps/config/default.yaml",
+    "sha256": "2ee07834044eefda716e467db07b1ae21da90846cd1f56f1e3a6f09863f2b372",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/config/default.yaml"
+  },
+  {
+    "file": "src/ps/pipelines/interview.py",
+    "sha256": "567d52167784134b15213c2523aeb7b45845579a42b045119cb8086f0f656cb7",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/interview.py"
+  },
+  {
+    "file": "src/ps/pipelines/revise.py",
+    "sha256": "f58bc04fa033e3f9a7a1a9c66e98fc63f43550882d31e5bcc148956359417961",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/revise.py"
+  },
+  {
+    "file": "src/ps/pipelines/refine.py",
+    "sha256": "148757d46884dbb4b2e8a49a8f9fef33bbf788375bb45eee833b75aeb5a3289d",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/refine.py"
+  },
+  {
+    "file": "src/ps/pipelines/__init__.py",
+    "sha256": "53b28fafce8afcb9cbdff60602c5d8efd500052b09b28d815f71b565c74cf449",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/__init__.py"
+  },
+  {
+    "file": "src/ps/pipelines/runtime.py",
+    "sha256": "c98774d129d35fa0a735720980b117d76c4f0ac7033a1b9a394685bac55ab34f",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/runtime.py"
+  },
+  {
+    "file": "src/ps/pipelines/recommend.py",
+    "sha256": "0d88699fe55bdf18c7546b9180e83fba830eeb24b8289db97281b2d1a26cfb60",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/recommend.py"
+  },
+  {
+    "file": "src/ps/pipelines/understand.py",
+    "sha256": "9c5474a635894cda583827e840137cafa5331670660e032623066dcb0b1d9c0d",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/understand.py"
+  },
+  {
+    "file": "src/ps/pipelines/learn.py",
+    "sha256": "60effd36de83916b14c2105c562e74aeb816e222f2cc5a514dfbe5581448e48a",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/learn.py"
+  },
+  {
+    "file": "src/ps/pipelines/explain.py",
+    "sha256": "751952bb82059b8489efd3d5aa2ef8d594e819a08624211ca905fdbf85047956",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/explain.py"
+  },
+  {
+    "file": "src/ps/pipelines/match.py",
+    "sha256": "e176b2b5a6acbf72afd29b8f2846dac9291e0a15f162120512deab1f9e2dda28",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/pipelines/match.py"
+  },
+  {
+    "file": "src/ps/prompts/explain/explain_v1.md",
+    "sha256": "3726f86cff9362c9daec526e1f9263c0cf6a0452056227c1ce1b452b027ff1b8",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/explain/explain_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/recommend/zero_pattern_v2.md",
+    "sha256": "e96e4740e4c070aa2578a4f09096c2c0cfb0a1ee7fcee66f642dd7d5fa32ad68",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/recommend/zero_pattern_v2.md"
+  },
+  {
+    "file": "src/ps/prompts/recommend/merge_v1.md",
+    "sha256": "da5fb3c29ef33fb253a9b1a41b42c831fcb27b49d3c5c05898a9d2f44816d9e9",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/recommend/merge_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/recommend/zero_pattern_v1.md",
+    "sha256": "3feea154aaa17fb6ee415e0cde316d128907d7a06602f3992e8cf4eb57837a8a",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/recommend/zero_pattern_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/recommend/critic_v1.md",
+    "sha256": "12727ec9fcfb2772fe49e4dd92115e97f7c6d471b9ebac287356ac864deb707d",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/recommend/critic_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/match/label_v1.md",
+    "sha256": "90c4729a81dc76e12b1b5fac33f3396b48a8de938a3330389883e92e7b63c93f",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/match/label_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/match/l1_v1.md",
+    "sha256": "8948ae49d5c2b07ffc90bd29a45241423e9f92504336104d1b79efb736e541f7",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/match/l1_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/understand/summary_v1.md",
+    "sha256": "79d8c61ccd5fb4078ef2d210536f3311857183f99a470bc4685f91212dcf0bd5",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/understand/summary_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/understand/report_v2.md",
+    "sha256": "1a7c383df295b90658d8e5cdcee7b2888ce3e33d7ff565fd879a75bdb83e84ff",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/understand/report_v2.md"
+  },
+  {
+    "file": "src/ps/prompts/shared/data_rules.md",
+    "sha256": "580482749f645352740301bf5bf6b3c6f75d115466f7e9357157ecac0909ae6e",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/shared/data_rules.md"
+  },
+  {
+    "file": "src/ps/prompts/shared/evidence_rules.md",
+    "sha256": "a79f07be69feddbd42aa6d36d5f0121b1992e2d15019dbb98532b1e3f043a093",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/shared/evidence_rules.md"
+  },
+  {
+    "file": "src/ps/prompts/interview/hypothesis_v1.md",
+    "sha256": "260ea0e904fe306a1b68c999ff2866b4d87e6c0ebf2d4e01a9f02b1f68f0b54e",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/interview/hypothesis_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/interview/questions_v1.md",
+    "sha256": "baee5142e17bb5a184c605c4f51524f9f0597ebb592ceb34249a3b30a119b98e",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/interview/questions_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/interview/hypothesis_v2.md",
+    "sha256": "2867c34d532b382ba5b026ab70c430a3896a43893d267a6a2e6d6bef6fd953a9",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/interview/hypothesis_v2.md"
+  },
+  {
+    "file": "src/ps/prompts/interview/questions_v2.md",
+    "sha256": "8f914854f4321878e8b2977630288482cff4d85f22c280e7b4296a922951b427",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/interview/questions_v2.md"
+  },
+  {
+    "file": "src/ps/prompts/interview/questions_v3.md",
+    "sha256": "00c7b3a49f21f780fe6ec00d0aee9a5e21dcca07bd4678743cdd7a325c54a28e",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/interview/questions_v3.md"
+  },
+  {
+    "file": "src/ps/prompts/generate/fingerprint_v1.md",
+    "sha256": "58a269c26693d86ea3b3281e3ed561b96c208c7b51ce3f178d48fc2dfc56981f",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/generate/fingerprint_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/generate/answer_plan_v1.md",
+    "sha256": "22b454a8c9d1d4818d8e41712f4311e050ee58365f51fff02527f18ec329d930",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/generate/answer_plan_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/eval/judge_v1.md",
+    "sha256": "7d94e77ccb8bd1000a68ec2a15301e8389459d43f1872ba4c6d931ecd71a84d7",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/eval/judge_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/eval/simulator_v1.md",
+    "sha256": "4074640aaeaa74d4c28eef09758cbc202676cf74dc895db51e23d09254a5b628",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/eval/simulator_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/refine/suggest_v1.md",
+    "sha256": "9cfd54c9c8effd32fee379b670c73223b6c5780295e56e4da016a2a06d56abbd",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/refine/suggest_v1.md"
+  },
+  {
+    "file": "src/ps/prompts/revise/revise_v1.md",
+    "sha256": "ae4c87587215661c94e10a80d80a6cb5b79a5460289caa8b091a9a298ec3adac",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/pattern-service/ps/prompts/revise/revise_v1.md"
+  },
+  {
+    "file": "src/fdescan/db.py",
+    "sha256": "d6d0c1129cae965b8a46c17aacc5846034586d2c148011fe36b1c5d9de61746a",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/db.py"
+  },
+  {
+    "file": "src/fdescan/ddl.py",
+    "sha256": "21e605c3149cb4086bc6d432066979eb38fbe18256eb88cc4646b094032b1d9d",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/ddl.py"
+  },
+  {
+    "file": "src/fdescan/__init__.py",
+    "sha256": "debc939dcd26b801e21a6b8821e409e408704f5174f1d901706ec84f167eda19",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/__init__.py"
+  },
+  {
+    "file": "src/fdescan/features.py",
+    "sha256": "d83c53eb5f18365dac132f220729b619b84ffe39d54f3ca29c3db446c72446b8",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/features.py"
+  },
+  {
+    "file": "src/fdescan/catalog_schema.json",
+    "sha256": "b80a980510a4a5d1e7a90aee618820429dee0e228dcf8d7475d4721a5b558885",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/catalog_schema.json"
+  },
+  {
+    "file": "src/fdescan/guard_rules.yaml",
+    "sha256": "0c7ff6df53010f33cb2e5efbd852aab90fa9ab1c6ac0bf042e9e189a186d27ba",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/guard_rules.yaml"
+  },
+  {
+    "file": "src/fdescan/mcp.py",
+    "sha256": "0c07555fba7b73dbf2b1d30425ee9d8f7d6c4ae769c0426332f205057d937552",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/mcp.py"
+  },
+  {
+    "file": "src/fdescan/conn.py",
+    "sha256": "1508eb5964d68bace0a4ae3c0ee07ce6ff51768b19825803c40a14a1f45d4097",
+    "source": "/Users/zhangdongdong/sudo/projects/ai-sudo/Sudo-FDE-Studio/FDE_Studio/fde-scan/fdescan/conn.py"
+  }
+]
