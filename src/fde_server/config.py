@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///.data/fde.db"
     migration_database_url: str | None = None
     public_url: str = "http://127.0.0.1:8800"
+    allow_insecure_http: bool = False
     session_secret: str = "development-only-change-session-secret"
     service_secret: str = "development-only-change-service-secret"
     credential_encryption_key: str = ""
@@ -68,14 +69,17 @@ class Settings(BaseSettings):
                     raise ValueError("Production secrets must be independently provisioned")
             if self.session_secret == self.service_secret:
                 raise ValueError("Session and service signing keys must differ")
-            if urlparse(self.public_url).scheme != "https":
-                raise ValueError("Production requires HTTPS public URL")
+            public_scheme = urlparse(self.public_url).scheme
+            if public_scheme not in {"http", "https"}:
+                raise ValueError("Production public URL must use HTTP or HTTPS")
+            if public_scheme == "http" and not self.allow_insecure_http:
+                raise ValueError("Production HTTP requires explicit FDE_ALLOW_INSECURE_HTTP=true")
             if urlparse(self.router_url).scheme != "https":
                 raise ValueError("Production Router transport requires TLS")
             if self.object_backend != "s3" or self.embedding_backend not in {"internal", "router"}:
                 raise ValueError("Production requires object storage and governed embeddings")
-            if self.virus_backend != "clamav" or not self.smtp_host:
-                raise ValueError("Production requires ClamAV and email delivery")
+            if self.virus_backend not in {"clamav", "disabled"} or not self.smtp_host:
+                raise ValueError("Production requires an explicit virus backend and email delivery")
             if not self.credential_encryption_key:
                 raise ValueError("Production requires FDE_CREDENTIAL_ENCRYPTION_KEY")
         for url in (self.router_url, self.pattern_url):
@@ -89,3 +93,7 @@ class Settings(BaseSettings):
     @property
     def production(self):
         return self.environment == "production"
+
+    @property
+    def secure_cookies(self):
+        return self.production and urlparse(self.public_url).scheme == "https"

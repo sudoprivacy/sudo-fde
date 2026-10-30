@@ -71,6 +71,8 @@ def scan_file(cfg, data, filename):
             raise Problem("FILE_INVALID", "无效的 DOCX") from exc
     if b"EICAR-STANDARD-ANTIVIRUS-TEST-FILE" in data:
         raise Problem("FILE_INFECTED", "文件未通过病毒检查")
+    if cfg.virus_backend in {"development", "disabled"}:
+        return
     if cfg.virus_backend == "clamav":
         try:
             with socket.create_connection((cfg.clamav_host, cfg.clamav_port), timeout=15) as sock:
@@ -84,6 +86,8 @@ def scan_file(cfg, data, filename):
                     raise Problem("FILE_INFECTED", "文件未通过病毒检查")
         except OSError as exc:
             raise Problem("SCANNER_UNAVAILABLE", "病毒检查服务不可用，暂不接收文件", 503) from exc
+    else:
+        raise Problem("SCANNER_UNAVAILABLE", "病毒检查服务未配置，暂不接收文件", 503)
 
 
 def extract(data, filename):

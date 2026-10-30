@@ -12,7 +12,7 @@ from fde_server.security import digest
 def invite_member(owner, platform, email, role='fde_member'):
     result = owner.post('/api/invitations', json={"email": email, "role": role})
     assert result.status_code == 200, result.text
-    link = parse_qs(urlparse(result.json()['development_link']).fragment)
+    link = parse_qs(urlparse(result.json()['invite_link']).fragment)
     client = TestClient(platform['app'])
     r = client.post('/api/invitations/accept', json={"token": link['token'][0], "tenant_id": link['tenant'][0],
                      "name": email.split('@')[0], "password": PASSWORD})

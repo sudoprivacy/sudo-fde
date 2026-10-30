@@ -336,7 +336,7 @@ async function submit(form){const kind=form.dataset.kind;const fd=new FormData(f
  if(kind==='grant')await api(`/knowledge-bases/${state.selectedKb}/grants`,{method:'POST',body:d});
  if(['new-kb','upload-document','revoke-document','grant'].includes(kind)){dialog.close();await knowledgePage();return;}
  if(kind==='search'){const r=await api('/knowledge/search',{method:'POST',body:d});dialog.close();modal('授权检索结果',r.hits.length?r.hits.map(h=>`<div class="result-card"><h3>${esc(h.title)} · 第 ${h.page} 页</h3><div class="detail-value">${esc(h.text)}</div></div>`).join(''):empty('没有匹配的授权资料','检查资料索引状态与授权范围。'),'close-only');return;}
- if(kind==='invite'){const r=await api('/invitations',{method:'POST',body:d});dialog.close();if(r.development_link)modal('邀请已创建',`<p>邀请链接已生成，可交给测试成员：</p><textarea readonly rows="4">${esc(r.development_link)}</textarea>`,'close-only');else toast('邀请邮件已发送');return;}
+ if(kind==='invite'){const r=await api('/invitations',{method:'POST',body:d});dialog.close();modal('邀请已创建',`<p>请复制下面的邀请链接发送给成员，链接有效期至 ${esc(date(r.expires_at))}：</p><textarea readonly rows="4">${esc(r.invite_link)}</textarea>`,'close-only');return;}
  if(kind==='edit-member'){await api('/members/'+id,{method:'PATCH',body:{role:d.role,active:d.active==='true'}});dialog.close();await membersPage();return;}
  if(kind==='new-provider'||kind==='edit-provider'){
    const body=readProviderForm(form);
