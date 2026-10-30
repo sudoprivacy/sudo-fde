@@ -14,6 +14,15 @@ Object.assign(errors,{PROVIDER_TIMEOUT:'模型生成超时，可手动重试或�
 const roleNames = {tenant_owner:'组织所有者',tenant_admin:'组织管理员',fde_member:'FDE 成员',billing_viewer:'账务查看者',workspace_editor:'工作区编辑者',workspace_viewer:'工作区查看者'};
 const admin = () => ['tenant_owner','tenant_admin'].includes(state.session?.role);
 function csrf(){return decodeURIComponent(document.cookie.split('; ').find(c=>c.startsWith('fde_csrf='))?.split('=').slice(1).join('=') || '');}
+function callId(){
+  const cryptoApi=typeof crypto!=='undefined'?crypto:null;
+  if(cryptoApi&&typeof cryptoApi.randomUUID==='function')return cryptoApi.randomUUID().replace(/-/g,'');
+  if(cryptoApi&&typeof cryptoApi.getRandomValues==='function'){
+    const bytes=new Uint8Array(16);cryptoApi.getRandomValues(bytes);
+    return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  return (Date.now().toString(36)+Math.random().toString(36).slice(2)+Math.random().toString(36).slice(2)).replace(/[^a-z0-9]/g,'');
+}
 async function api(path, options={}){
   const headers={'X-CSRF-Token':csrf(),...(options.headers||{})};
   if(options.body && !(options.body instanceof FormData)){headers['Content-Type']='application/json';options.body=JSON.stringify(options.body);}
@@ -296,7 +305,7 @@ async function action(el){const a=el.dataset.action,id=el.dataset.id;if(a==='clo
 async function queueAgent(capability,params={}){
   const choice=selectedWorkspaceModel();
   if(!choice)throw new Error('请先在「我的模型」配置对话模型，或绑定组织模型账户');
-  await api(`/workspaces/${state.current.workspace.id}/agent/${capability}`,{method:'POST',body:{call_id:crypto.randomUUID().replaceAll('-',''),model:choice.model,provider_id:choice.provider_id,params}});
+  await api(`/workspaces/${state.current.workspace.id}/agent/${capability}`,{method:'POST',body:{call_id:callId(),model:choice.model,provider_id:choice.provider_id,params}});
   state.tab=capability==='recommend'?'cards':capability;
   await openWorkspace(state.current.workspace.id);
   toast('任务已提交，后台开始处理');
