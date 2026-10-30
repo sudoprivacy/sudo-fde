@@ -37,7 +37,8 @@ def test_unique_organization_names_on_every_creation_and_edit_path(platform):
     response = anonymous.post('/api/auth/register', json={
         'email': 'new@example.com', 'name': 'New user', 'password': PASSWORD, 'organization': 'acme team',
     })
-    assert response.status_code == 409
+    assert response.status_code == 403
+    assert response.json()['error']['code'] == 'REGISTRATION_DISABLED'
     with platform['rt'].db.session() as s:
         assert s.scalar(select(User).where(User.email == 'new@example.com')) is None
     created = control.post('/api/admin/tenants', json={'name': 'Beta Company'})

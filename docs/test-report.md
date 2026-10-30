@@ -54,10 +54,13 @@ uv run pytest -q --cov=fde_server
 sh scripts/test-postgres.sh
 docker build -t sudo-fde-server:local .
 docker compose -p sudo-fde-acceptance -f compose.yaml -f deploy/compose.acceptance.yaml up -d --no-build
-uv run python scripts/accept-stack.py
+docker compose -p sudo-fde-acceptance -f compose.yaml -f deploy/compose.acceptance.yaml --profile seed run --rm demo
+mkdir -p test-results
+docker compose -p sudo-fde-acceptance -f compose.yaml -f deploy/compose.acceptance.yaml cp web:/app/.data/admin-credentials.txt test-results/acceptance-admin-credentials.txt
+FDE_ACCEPTANCE_CREDENTIALS_FILE=test-results/acceptance-admin-credentials.txt uv run python scripts/accept-stack.py
 ```
 
-容器验收固定访问本机 `18800`，使用独立项目与合成资料；不会自动转向生产 URL。验收后的专属容器和测试卷可用相同 Compose 项目名执行 `down --volumes` 清理。
+容器验收固定访问本机 `18800`，使用独立项目与合成资料；不会自动转向生产 URL。测试通过该独立环境的管理员账号创建组织，不依赖公开注册。`test-results/` 中的验收凭据文件不提交到 Git，使用后应清理。验收后的专属容器和测试卷可用相同 Compose 项目名执行 `down --volumes` 清理。
 
 ## 外部验收边界
 

@@ -11,13 +11,6 @@ class Strict(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
 
-class Register(Strict):
-    email: EmailStr
-    name: str = Field(min_length=1, max_length=100)
-    password: str = Field(min_length=12, max_length=128)
-    organization: OrganizationName
-
-
 class Login(Strict):
     email: EmailStr
     password: str = Field(max_length=128)
