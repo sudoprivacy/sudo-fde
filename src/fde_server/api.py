@@ -154,7 +154,7 @@ def login_response(rt, user, tenant_id):
         "fde_session",
         token,
         httponly=True,
-        secure=rt.cfg.production,
+        secure=rt.cfg.secure_cookies,
         samesite="lax",
         max_age=rt.cfg.session_hours * 3600,
         path="/",
@@ -163,7 +163,7 @@ def login_response(rt, user, tenant_id):
         "fde_csrf",
         csrf,
         httponly=False,
-        secure=rt.cfg.production,
+        secure=rt.cfg.secure_cookies,
         samesite="strict",
         max_age=rt.cfg.session_hours * 3600,
         path="/",
@@ -211,7 +211,7 @@ def create_app(runtime=None):
                 "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
             }
         )
-        if rt.cfg.production:
+        if rt.cfg.secure_cookies:
             response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
         return response
 
@@ -968,12 +968,11 @@ def create_app(runtime=None):
             s.add(inv)
             s.flush()
             link = rt.cfg.public_url + "/invite#tenant=" + ctx.tenant_id + "&token=" + token
-            sent = mail.send(rt.cfg, inv.email, "邀请加入 FDE 组织", link)
             audit(s, ctx, "member.invited", inv.id, role=data.role)
             return {
                 "id": inv.id,
-                "email_sent": sent,
-                **({"development_link": link} if not rt.cfg.production else {}),
+                "invite_link": link,
+                "expires_at": inv.expires_at.isoformat(),
             }
 
     @app.post("/api/invitations/accept")

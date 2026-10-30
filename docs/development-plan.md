@@ -8,7 +8,7 @@
 
 公共 API/UI、worker、内部 Pattern Service 共用 PostgreSQL，但每个事务都设置可信的 Tenant/User 上下文；所有私有表 FORCE RLS，并使用不带 superuser/BYPASSRLS 的运行账号。SQLAlchemy 应用鉴权和复合租户外键提供第二层保护。迁移账号独立。会话与用户身份是平台级对象，成员关系绑定组织，避免将同一用户复制为多个租户身份。
 
-对象存储：生产 S3 兼容私有桶与服务端加密，开发本地目录。浏览器始终通过授权下载代理读取，避免资料撤销后长期有效的公开链接。对象键以 tenant/workspace 或 tenant/knowledge 分区。上传由 ClamAV 检查，解析/切片/embedding 在 worker 完成。
+对象存储：生产 S3 兼容私有桶与服务端加密，开发本地目录。浏览器始终通过授权下载代理读取，避免资料撤销后长期有效的公开链接。对象键以 tenant/workspace 或 tenant/knowledge 分区。上传执行格式、大小和敏感内容校验；当前单机生产配置关闭病毒扫描，解析/切片/embedding 由 `fde-server` 完成。
 
 检索：工作区授权资料优先，随后租户授权资料；每次检索及引用读取都重新检查成员、知识库授权、文档版本和撤销状态。384 维内部多语言 embedding 或 Router embedding；本地开发提供明确标记的确定性向量替身。词项匹配与向量余弦混合排序，最多返回六个片段。第一版使用 PostgreSQL 索引筛选授权集合后精确重排，每次最多 10,000 个有效片段，超过容量明确拒绝，避免静默遗漏。规模扩大时切换 pgvector/HNSW 并保留相同权限过滤，不把近似向量结果作为授权依据。
 
@@ -43,4 +43,4 @@ FDE 保存 Router 原始回执和用量投影，不维护充值余额或自行�
 
 SQLite 用于快速测试；PostgreSQL 使用真实运行角色验证 RLS，不以 superuser 测试结果替代隔离验收。浏览器验收登录、组织切换、工作区、知识库和结果展示。Router 真实合同另设 opt-in 验收；模拟器测试通过不表示真实 Router 已对接。
 
-生产启用前需提供真实 Router 合同端点、私有对象桶、ClamAV、邮件、内部 embedding/TLS 与独立密钥，并完成真实模型质量评测、备份恢复演练与运维容量验收。代码会拒绝开发默认密钥、SQLite、模拟 Router 及开发 embedding 的生产配置。
+生产启用前需提供真实 Router 合同端点、私有对象桶、邮件、内部 embedding/TLS 与独立密钥，并完成真实模型质量评测、备份恢复演练与运维容量验收。代码会拒绝开发默认密钥、SQLite、模拟 Router 及开发 embedding 的生产配置。

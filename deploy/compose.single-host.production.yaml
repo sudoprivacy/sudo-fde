@@ -1,7 +1,7 @@
 version: "2.4"
 
 x-app: &app
-  image: ${FDE_IMAGE:?Set FDE_IMAGE to the tested immutable image tag}
+  image: ${FDE_SERVER_IMAGE:?Set FDE_SERVER_IMAGE to the tested immutable image tag}
   env_file: [.env.production]
   restart: unless-stopped
   read_only: true
@@ -14,7 +14,6 @@ x-app: &app
   depends_on:
     postgres: {condition: service_healthy}
     minio: {condition: service_started}
-    clamav: {condition: service_started}
 
 services:
   postgres:
@@ -45,11 +44,6 @@ services:
     restart: unless-stopped
     networks: [app]
 
-  clamav:
-    image: ${FDE_CLAMAV_IMAGE:-sudo-fde-clamav:1.4-amd64}
-    restart: unless-stopped
-    networks: [app]
-
   migrate:
     <<: *app
     restart: "no"
@@ -68,33 +62,27 @@ services:
 
   web:
     <<: *app
+    image: ${FDE_WEB_IMAGE:?Set FDE_WEB_IMAGE to the tested immutable image tag}
     command: [fde, serve, --host, 0.0.0.0, --port, "8800"]
+    ports: ["80:8800"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      minio: {condition: service_started}
+      server: {condition: service_started}
     healthcheck:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8800/healthz')"]
       interval: 30s
       timeout: 5s
       retries: 3
 
-  pattern:
+  server:
     <<: *app
-    command: [fde, pattern, --host, 0.0.0.0, --port, "8801"]
-
-  worker:
-    <<: *app
-    command: [fde, worker]
-
-  maintenance:
-    <<: *app
-    command: [fde, maintenance]
-
-  proxy:
-    image: ${FDE_NGINX_IMAGE:-sudo-fde-nginx:1.27-alpine-amd64}
-    ports: ["443:443"]
-    volumes:
-      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./deploy/tls:/etc/nginx/tls:ro
-    networks: [app]
-    depends_on: [web]
+    command: [fde, server, --host, 0.0.0.0, --port, "8801"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8801/healthz')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 networks:
   app:
@@ -103,4 +91,3 @@ networks:
 volumes:
   database:
   objects:
-  clamav-data:

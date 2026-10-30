@@ -57,6 +57,9 @@ def main():
         p = sub.add_parser(command)
         p.add_argument("--host", default="127.0.0.1")
         p.add_argument("--port", default=port, type=int)
+    server = sub.add_parser("server")
+    server.add_argument("--host", default="127.0.0.1")
+    server.add_argument("--port", default=8801, type=int)
     sub.add_parser("init-dev")
     sub.add_parser("seed-demo")
     sub.add_parser("worker")
@@ -86,6 +89,66 @@ def main():
         uvicorn.run(create_app(runtime) if args.command == "serve" else create_pattern_app(runtime),
                     host=args.host, port=args.port, proxy_headers=cfg.trust_proxy,
                     forwarded_allow_ips=cfg.forwarded_allow_ips)
+    elif args.command == "server":
+        # Keep the internal Pattern API, queue consumer and maintenance loop in
+        # one process. They retain separate Runtime instances for connection
+        # pools and lifecycle ownership, but share a single container process.
+        import threading
+
+        import uvicorn
+
+        from .jobs import run_once
+        from .maintenance import run_maintenance
+        from .pattern import create_pattern_app
+
+        worker_runtime = Runtime(cfg)
+        maintenance_runtime = Runtime(cfg)
+        stop = threading.Event()
+        pattern_server = uvicorn.Server(
+            uvicorn.Config(
+                create_pattern_app(runtime),
+                host=args.host,
+                port=args.port,
+                proxy_headers=cfg.trust_proxy,
+                forwarded_allow_ips=cfg.forwarded_allow_ips,
+            )
+        )
+
+        def stop_all(*_):
+            stop.set()
+            pattern_server.should_exit = True
+
+        def run_pattern():
+            pattern_server.run()
+
+        def run_worker():
+            while not stop.is_set():
+                if not run_once(worker_runtime):
+                    stop.wait(0.5)
+
+        def run_maintenance_loop():
+            while not stop.is_set():
+                print(run_maintenance(maintenance_runtime), flush=True)
+                stop.wait(60)
+
+        signal.signal(signal.SIGTERM, stop_all)
+        signal.signal(signal.SIGINT, stop_all)
+        threads = [
+            threading.Thread(target=run_pattern, name="pattern", daemon=True),
+            threading.Thread(target=run_worker, name="worker", daemon=True),
+            threading.Thread(target=run_maintenance_loop, name="maintenance", daemon=True),
+        ]
+        for thread in threads:
+            thread.start()
+        try:
+            while not stop.wait(1):
+                pass
+        finally:
+            stop_all()
+            for thread in threads:
+                thread.join(timeout=10)
+            worker_runtime.close()
+            maintenance_runtime.close()
     elif args.command == "init-dev":
         initialize(runtime)
     elif args.command == "seed-demo":

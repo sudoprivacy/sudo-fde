@@ -27,7 +27,7 @@ uv run fde dev
 - PostgreSQL + Alembic + FORCE RLS，租户复合外键，裁决/审计/细化历史只追加；SQLite 限开发与测试。
 - 原 Pattern 的 summarize/interview/recommend/match/report/revise/refine/learn/explain 流水线，私网 JWT 身份与持久化任务。
 - Router 目录/余额/预占/执行/结算/释放/回执合同，稳定幂等子调用、故障恢复、周期性对账；账务权威始终属于 Router。
-- 租户/工作区知识库、授权、文档版本与保留期、病毒/格式/敏感检查、异步切片与向量化、受控 RAG、页码/段落引用。
+- 租户/工作区知识库、授权、文档版本与保留期、格式/敏感检查、异步切片与向量化、受控 RAG、页码/段落引用。
 - 引用来源授权继承到生成结果与导出；撤销后不能通过旧片段、共享工作区或下载链接绕过。
 - 业务裁决、修订预览/选择/应用/撤销、目录约束的字段细化、版本冲突检测。
 - YAML、OWL（Turtle/RDF XML）、BPMN、细化 YAML/Markdown、R2RML 和带内容哈希的 ZIP 交付包。
@@ -56,7 +56,7 @@ docker build -t sudo-fde-server:local .
 
 本机组合：`docker compose up --build`。生产使用独立的 `.env.production`、已测试的镜像摘要和 `compose.production.yaml`，详见 [docs/operations.md](docs/operations.md)。
 
-生产会拒绝默认密钥、SQLite、模拟 Router、开发 embedding 和未启用 RLS 的数据库。必须配置真实的 Router 合同、对象存储、ClamAV、SMTP、内部 embedding 或 Router embedding，以及 TLS 和网络隔离；本仓库不会自动上线、充值或迁移原试用数据。
+生产会拒绝默认密钥、SQLite、模拟 Router、开发 embedding 和未启用 RLS 的数据库。必须配置真实的 Router 合同、对象存储、SMTP、内部 embedding 或 Router embedding，以及网络隔离；当前单机 HTTP 配置显式关闭病毒扫描；本仓库不会自动上线、充值或迁移原试用数据。
 
 本次更新的数据库版本为 `0006`，升级已有 PostgreSQL 实例前先备份，再通过迁移角色执行 `alembic upgrade head`。迁移会规范重名组织并记录调整，成员、工作区与审计历史保留。
 

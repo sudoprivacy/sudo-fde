@@ -2,8 +2,8 @@
 
 ## Supported boundaries
 
-- Python 3.12+, PostgreSQL 16, Alembic, private S3-compatible storage, ClamAV and SMTP.
-- Frontend/BFF, internal Pattern, worker and maintenance are separate processes. Only the reverse proxy is public. Pattern has no browser credential flow or public provider API.
+- Python 3.12+, PostgreSQL 16, Alembic, private S3-compatible storage and SMTP; virus scanning is an explicit deployment choice.
+- The public web container serves the BFF and UI on port 80. The private `fde-server` container runs Pattern, queue consumption and maintenance in one process. The server has no public port.
 - Local development uses SQLite, local files, development embeddings and a Router simulator. These are labeled and refused in production.
 - First release does not import the old SQLite workspaces. They remain in the original project. Importing old tenant-less data requires a separate audited mapping and migration, not a filesystem copy into production.
 - No online DB or MCP endpoint is published. Use the bundled `fde-scan` on the data owner's machine, inspect its metadata output and upload catalog JSON or DDL.
@@ -15,14 +15,14 @@
 2. Provision an isolated PostgreSQL database. Migration identity owns schema changes; runtime roles are `NOSUPERUSER NOBYPASSRLS`, have USAGE on the schema and SELECT/INSERT/UPDATE/DELETE on runtime tables, and no schema CREATE, TRUNCATE or policy ownership. Revoke unnecessary PUBLIC grants.
 3. Run `FDE_MIGRATION_DATABASE_URL=... alembic upgrade head` using the migration credential. This installs FORCE RLS, composite tenant foreign keys, append-only decision/audit/history triggers and immutable evidence bodies. Never call `init-dev` for production.
 4. Provision private object storage. Block public ACLs, enforce TLS/encryption and namespace-aware lifecycle/backup policies. Prefer workload identity over static access keys. Downloads pass through FDE authorization, so changing membership or knowledge grants takes effect immediately.
-5. Provision ClamAV and SMTP. Unavailable scanning rejects uploads; the worker checks again before parsing. Password reset/invitation links are sent through SMTP and never returned to the production browser.
+5. Provision SMTP. The single-host profile sets `FDE_VIRUS_BACKEND=disabled`; enable a separately managed scanner before accepting untrusted uploads if virus scanning is required. Password reset/invitation links are sent through SMTP and never returned to the production browser.
 6. Provision a 384-dimensional multilingual embedding service. The internal HTTP adapter supports a TEI-style `/embed` endpoint with `inputs` and `truncate`; use a pinned multilingual-e5-small model revision and protected internal networking. Alternatively set embedding_backend=router after confirming its capability and authorized embedding model. Test hash vectors are not semantic embeddings and cannot be selected in production.
 7. Bind the actual SudoRouter contract and complete its read-only checks plus separately authorized real billing acceptance. Provide server secrets through the deployment secret manager. All production placeholders and development defaults must be replaced.
-8. Copy `.env.production.example` to an operator-owned `.env.production`, configure TLS and an isolated service network, and use `compose.production.yaml` or equivalent orchestrator manifests. Set trusted proxy source addresses to the actual reverse-proxy network. Do not expose internal ports 8801/8802.
-9. Configure external egress policy: Pattern may reach only PostgreSQL, SudoRouter and approved internal dependencies. BFF may additionally reach the private object store, ClamAV and SMTP. The customer cannot change these destinations. Network policy is part of deployment, not a UI toggle.
+8. Copy `.env.production.example` to an operator-owned `.env.production`, configure the selected HTTP/HTTPS entrypoint and an isolated service network, and use `compose.production.yaml` or equivalent orchestrator manifests. Set `FDE_TRUST_PROXY=false` when web is published directly; do not expose internal port 8801.
+9. Configure external egress policy: Pattern may reach only PostgreSQL, SudoRouter and approved internal dependencies. BFF may additionally reach the private object store and SMTP. The customer cannot change these destinations. Network policy is part of deployment, not a UI toggle.
 10. Start maintenance alongside workers. Its tenant directory contains IDs only; every business-table operation starts a tenant-scoped transaction. Reconciliation and physical cleanup run once per minute. Keep only one maintenance replica unless an external scheduler serializes it.
 
-Production startup validates the database role and forced workspace RLS; readiness also checks the Router contract. Liveness is `/healthz`; readiness is `/readyz`. An unavailable Router leaves the UI usable for non-model work but fails dependency readiness. Production Nginx configuration includes TLS, request-size limits and authentication throttling.
+Production startup validates the database role and forced workspace RLS; readiness also checks the Router contract. Liveness is `/healthz`; readiness is `/readyz`. An unavailable Router leaves the UI usable for non-model work but fails dependency readiness. The application provides request validation, security headers and authentication throttling; HTTPS can be enabled by placing a TLS entrypoint in front of port 80.
 
 ## Capacity and reliability
 
@@ -36,7 +36,7 @@ Reconciliation updates only receipts and usage projections. Failed execution wit
 
 The organization admin dashboard/API provides member/workspace/document/chunk/job counts, failures, tokens and usage projections. `/api/audit` exposes tenant-scoped immutable events with paging. Worker and API logs contain request/job identifiers and error classes, not customer body text, provider payloads or credentials. Health probes do not expose private data.
 
-Suggested alerts: readiness failure > 2 minutes; failed job rate > 5% for 15 minutes; any `router.mismatch`; settlement pending > 10 minutes; ingestion failures > 5%; oldest queued job > 5 minutes; ClamAV unavailable; PostgreSQL storage/connection saturation. Connect these signals to the deployment's existing monitoring system; no outbound alert messages are sent by development commands.
+Suggested alerts: readiness failure > 2 minutes; failed job rate > 5% for 15 minutes; any `router.mismatch`; settlement pending > 10 minutes; ingestion failures > 5%; oldest queued job > 5 minutes; PostgreSQL storage/connection saturation. Connect these signals to the deployment's existing monitoring system; no outbound alert messages are sent by development commands.
 
 ## Backup and restore
 
@@ -48,4 +48,4 @@ Revoking a document immediately removes it from retrieval and authorized source 
 
 ## Release checklist and known external acceptance
 
-Required before live customer rollout: actual Router compatibility/billing tests; SMTP delivery; ClamAV health and signature updates; S3 policy and restore drill; real multilingual retrieval quality; representative model outputs; tenant load tests and TLS/egress policies. These need deployment-owned services and credentials. Local mock acceptance does not certify them.
+Required before live customer rollout: actual Router compatibility/billing tests; SMTP delivery; S3 policy and restore drill; real multilingual retrieval quality; representative model outputs; tenant load tests and TLS/egress policies. These need deployment-owned services and credentials. Local mock acceptance does not certify them.

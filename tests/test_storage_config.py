@@ -58,7 +58,7 @@ def test_clamav_fails_closed_and_docx_extracts_tables():
 @pytest.mark.parametrize('updates', [
     {'session_secret':'development-secret'*3}, {'service_secret':'REPLACE_WITH_SOME_LONG_PLACEHOLDER_SECRET'},
     {'embedding_backend':'development'}, {'object_backend':'local'}, {'virus_backend':'development'},
-    {'public_url':'http://example.com'}, {'router_url':'http://router.local'}, {'database_url':'sqlite:///:memory:'}
+    {'router_url':'http://router.local'}, {'database_url':'sqlite:///:memory:'}
 ])
 def test_production_guards_reject_unsafe_deployments(updates):
     config=dict(environment='production',database_url='postgresql+psycopg://app:secret@db/fde',
@@ -69,3 +69,15 @@ def test_production_guards_reject_unsafe_deployments(updates):
     config.update(updates)
     with pytest.raises(ValueError):
         Settings(**config)
+
+
+def test_production_http_requires_explicit_opt_in_and_can_disable_scanning():
+    config=dict(environment='production',database_url='postgresql+psycopg://app:secret@db/fde',
+                public_url='http://fde.example.com',router_url='https://router.example.com',
+                session_secret='a'*48,service_secret='b'*48,router_token='c'*48,
+                credential_encryption_key='d'*44,object_backend='s3',embedding_backend='internal',
+                embedding_url='http://embedding',virus_backend='disabled',smtp_host='smtp')
+    with pytest.raises(ValueError, match='FDE_ALLOW_INSECURE_HTTP'):
+        Settings(**config)
+    cfg = Settings(**config, allow_insecure_http=True)
+    assert cfg.secure_cookies is False
